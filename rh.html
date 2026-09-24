@@ -124,58 +124,64 @@
     .modal-box .btn { min-width: 110px }
     @keyframes modalIn { from { opacity: 0; transform: scale(.95) } to { opacity: 1; transform: scale(1) } }
 
-    @media (max-width: 600px) {
-      .app { padding: 1rem .75rem 2.5rem }
-      .grid { grid-template-columns: 1fr; gap: 14px }
+    @media (max-width: 600px), (max-device-width: 600px) {
+      .app { max-width: none; padding: 1rem .75rem 2.5rem }
+      .grid { grid-template-columns: 1fr; gap: 0.875rem }
 
-      .header, .collab-card { padding: 1rem; gap: 12px; border-radius: 12px }
-      .logo { width: 46px; height: 46px; font-size: 16px }
-      .header h1 { font-size: 19px }
-      .header p { font-size: 14px }
-      .collab-name { font-size: 17px }
-      .collab-info { font-size: 14px }
+      .header, .collab-card { padding: 1rem; gap: 0.75rem; border-radius: 0.75rem }
+      .logo { width: 2.875rem; height: 2.875rem; font-size: 1rem }
+      .header h1 { font-size: 1.1875rem }
+      .header p { font-size: 0.875rem }
+      .collab-name { font-size: 1.0625rem }
+      .collab-info { font-size: 0.875rem }
 
-      .card { padding: 1.15rem 1rem; border-radius: 12px }
-      .sec { font-size: 13px; margin-bottom: 1.1rem }
+      .card { padding: 1.15rem 1rem; border-radius: 0.75rem }
+      .sec { font-size: 0.8125rem; margin-bottom: 1.1rem }
 
-      .f { gap: 6px }
-      .f label { font-size: 15px }
+      .f { gap: 0.375rem }
+      .f label { font-size: 0.9375rem }
       .f input, .f select, .f textarea {
-        font-size: 16px; padding: 12px; min-height: 48px; border-radius: 10px;
+        font-size: 1rem; padding: 0.75rem; min-height: 3rem; border-radius: 0.625rem;
       }
-      .f textarea { min-height: 90px }
+      .f textarea { min-height: 5.625rem }
 
-      .radio-group { gap: 22px; padding: 6px 0 }
-      .radio-group label { font-size: 16px; padding: 6px 0 }
-      .radio-group input[type="radio"] { width: 22px; height: 22px }
+      .radio-group { gap: 1.375rem; padding: 0.375rem 0 }
+      .radio-group label { font-size: 1rem; padding: 0.375rem 0 }
+      .radio-group input[type="radio"] { width: 1.375rem; height: 1.375rem }
 
-      .info, .warn { font-size: 14px !important; line-height: 1.5; padding: .85rem 1rem }
+      .info, .warn { font-size: 0.875rem !important; line-height: 1.5; padding: .85rem 1rem }
 
       .dep-item { padding: 1rem }
-      .dep-item > div:first-of-type { font-size: 14px !important }
-      .dep-rm { top: .25rem; right: .35rem; width: 40px; height: 40px; font-size: 24px }
-      .add-btn { font-size: 15px; padding: 14px 1rem; border-radius: 10px }
+      .dep-item > div:first-of-type { font-size: 0.875rem !important }
+      .dep-rm { top: .25rem; right: .35rem; width: 2.5rem; height: 2.5rem; font-size: 1.5rem }
+      .add-btn { font-size: 0.9375rem; padding: 0.875rem 1rem; border-radius: 0.625rem }
 
       .upload-area { padding: 1.5rem 1rem }
-      .upload-area p { font-size: 15px }
-      .upload-area span { font-size: 13px }
-      .file-item { font-size: 14px; padding: 9px 12px; gap: 8px }
+      .upload-area p { font-size: 0.9375rem }
+      .upload-area span { font-size: 0.8125rem }
+      .file-item { font-size: 0.875rem; padding: 0.5625rem 0.75rem; gap: 0.5rem }
       .file-item span { word-break: break-all }
-      .file-item button { font-size: 22px; padding: 0 6px }
+      .file-item button { font-size: 1.375rem; padding: 0 0.375rem }
 
-      .prog-msg { font-size: 14px }
+      .prog { height: .35rem }
+      .prog-msg { font-size: 0.875rem }
 
       .actions { flex-direction: column; margin-top: 1.25rem }
-      .btn { width: 100%; font-size: 16px; padding: 14px 22px; border-radius: 10px }
+      .btn { width: 100%; font-size: 1rem; padding: 0.875rem 1.375rem; border-radius: 0.625rem }
 
       .ok, .erro-box { padding: 1.5rem 1.15rem }
-      .ok h2, .erro-box h2 { font-size: 20px }
-      .ok p, .erro-box p { font-size: 15px }
+      .ok h2, .erro-box h2 { font-size: 1.25rem }
+      .ok p, .erro-box p { font-size: 0.9375rem }
 
-      .modal-box { padding: 1.5rem 1.15rem 1.25rem }
-      .modal-box h3 { font-size: 18px }
-      .modal-box p { font-size: 15px }
+      .modal-box { max-width: 24rem; padding: 1.5rem 1.15rem 1.25rem }
+      .modal-box h3 { font-size: 1.125rem }
+      .modal-box p { font-size: 0.9375rem }
       .modal-box .btn { width: 100% }
+    }
+
+    /* Celular abrindo em modo "site para computador": escala a tela virtual */
+    @media (min-width: 601px) and (max-device-width: 600px) {
+      html { font-size: calc(100vw / 22.5) }
     }
   </style>
 </head>
