@@ -102,9 +102,36 @@
     }
 
     @media (max-width: 520px) { .grid { grid-template-columns: 1fr } }
+  
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.45);
+      display: none; align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.aberto { display: flex }
+    .modal-box {
+      background: #fff; color: #1a1a1a;
+      width: 100%; max-width: 380px;
+      border-radius: 14px; padding: 1.75rem 1.5rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      animation: modalIn .15s ease-out;
+    }
+    .modal-box h3 { font-size: 16px; font-weight: 600; color: #16A34A; margin-bottom: .6rem }
+    .modal-box p  { font-size: 14px; line-height: 1.5; color: #444; margin-bottom: 1.25rem; word-break: break-word }
+    .modal-box .btn { min-width: 110px }
+    @keyframes modalIn { from { opacity: 0; transform: scale(.95) } to { opacity: 1; transform: scale(1) } }
   </style>
 </head>
 <body>
+  <div class="modal-overlay" id="modalAviso" role="alertdialog" aria-modal="true" aria-labelledby="modalTitulo" aria-describedby="modalMsg">
+    <div class="modal-box">
+      <h3 id="modalTitulo">Atenção</h3>
+      <p id="modalMsg"></p>
+      <button type="button" class="btn success" id="modalOk">OK</button>
+    </div>
+  </div>
   <div class="app">
     <div class="header">
       <div class="logo">S2i</div>
@@ -217,6 +244,26 @@
   </div>
 
   <script>
+    // ── Aviso em modal (substitui alert) ────────────────────
+    function mostrarAviso(msg) {
+      var overlay = document.getElementById('modalAviso');
+      document.getElementById('modalMsg').textContent = msg;
+      overlay.classList.add('aberto');
+      document.getElementById('modalOk').focus();
+    }
+
+    function fecharAviso() {
+      document.getElementById('modalAviso').classList.remove('aberto');
+    }
+
+    document.getElementById('modalOk').addEventListener('click', fecharAviso);
+    document.getElementById('modalAviso').addEventListener('click', function(e) {
+      if (e.target === this) fecharAviso();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') fecharAviso();
+    });
+    // ────────────────────────────────────────────────────────
     var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx4QcGGCcNKq9KDTmbjsrvT50sag55DWbjh6QpmvvVrB8PTLeVKko-yDoNpXN-CNEhF_A/exec';
     var TOKEN = new URLSearchParams(window.location.search).get('token');
 
@@ -273,12 +320,12 @@
     }
 
     function salvar() {
-      if (!document.getElementById('empresa').value.trim())  { alert('Preencha o nome da empresa.'); return; }
-      if (!document.getElementById('cargo').value.trim())    { alert('Preencha o cargo.'); return; }
-      if (!document.getElementById('salario').value.trim())  { alert('Preencha o salário.'); return; }
-      if (!document.getElementById('dataAdm').value)         { alert('Preencha a data de admissão.'); return; }
-      if (!document.getElementById('experiencia').value)     { alert('Selecione o período de experiência.'); return; }
-      if (!document.getElementById('horario').value.trim())  { alert('Preencha o horário de trabalho.'); return; }
+      if (!document.getElementById('empresa').value.trim())  { mostrarAviso('Preencha o nome da empresa.'); return; }
+      if (!document.getElementById('cargo').value.trim())    { mostrarAviso('Preencha o cargo.'); return; }
+      if (!document.getElementById('salario').value.trim())  { mostrarAviso('Preencha o salário.'); return; }
+      if (!document.getElementById('dataAdm').value)         { mostrarAviso('Preencha a data de admissão.'); return; }
+      if (!document.getElementById('experiencia').value)     { mostrarAviso('Selecione o período de experiência.'); return; }
+      if (!document.getElementById('horario').value.trim())  { mostrarAviso('Preencha o horário de trabalho.'); return; }
 
       var btn = document.getElementById('btnSalvar');
       btn.textContent = 'Salvando...';
@@ -313,7 +360,7 @@
             window.scrollTo(0, 0);
           }, 500);
         } else {
-          alert('Erro: ' + r.erro);
+          mostrarAviso('Erro: ' + r.erro);
           btn.textContent = '✓ Finalizar admissão';
           btn.className = 'btn success';
           document.getElementById('prog').style.display = 'none';
@@ -321,7 +368,7 @@
         }
       })
       .catch(function(e) {
-        alert('Erro: ' + e.message);
+        mostrarAviso('Erro: ' + e.message);
         btn.textContent = '✓ Finalizar admissão';
         btn.className = 'btn success';
         document.getElementById('prog').style.display = 'none';

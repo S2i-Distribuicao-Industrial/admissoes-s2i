@@ -123,9 +123,36 @@
     .prog-msg { font-size: 13px; color: #666; text-align: center; margin-top: 6px; display: none }
 
     @media (max-width: 520px) { .grid { grid-template-columns: 1fr } }
+  
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.45);
+      display: none; align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.aberto { display: flex }
+    .modal-box {
+      background: #fff; color: #1a1a1a;
+      width: 100%; max-width: 380px;
+      border-radius: 14px; padding: 1.75rem 1.5rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      animation: modalIn .15s ease-out;
+    }
+    .modal-box h3 { font-size: 16px; font-weight: 600; color: #1B4FD8; margin-bottom: .6rem }
+    .modal-box p  { font-size: 14px; line-height: 1.5; color: #444; margin-bottom: 1.25rem; word-break: break-word }
+    .modal-box .btn { min-width: 110px }
+    @keyframes modalIn { from { opacity: 0; transform: scale(.95) } to { opacity: 1; transform: scale(1) } }
   </style>
 </head>
 <body>
+  <div class="modal-overlay" id="modalAviso" role="alertdialog" aria-modal="true" aria-labelledby="modalTitulo" aria-describedby="modalMsg">
+    <div class="modal-box">
+      <h3 id="modalTitulo">Atenção</h3>
+      <p id="modalMsg"></p>
+      <button type="button" class="btn primary" id="modalOk">OK</button>
+    </div>
+  </div>
   <div class="app">
     <div class="header">
       <div class="logo">S2i</div>
@@ -250,7 +277,7 @@
         <div class="sec">Documentos</div>
         <div class="info" style="margin-bottom:1rem;font-size:12px">
           Anexe: RG (frente e verso), CPF, comprovante de endereço com CEP, exame admissional, carteira de trabalho digital.
-          Dependentes: RG ou certidão de nascimento, CPF, declaração de escolaridade (maiores 7 anos), caderneta de vacinação (menores 6 anos).
+          Dependentes: RG ou certidão de nascimento, CPF, declaração de escolaridade.
         </div>
         <div class="upload-area" onclick="document.getElementById('fi').click()">
           <input type="file" id="fi" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="addFiles(this.files)">
@@ -277,6 +304,26 @@
   </div>
 
   <script>
+    // ── Aviso em modal (substitui alert) ────────────────────
+    function mostrarAviso(msg) {
+      var overlay = document.getElementById('modalAviso');
+      document.getElementById('modalMsg').textContent = msg;
+      overlay.classList.add('aberto');
+      document.getElementById('modalOk').focus();
+    }
+
+    function fecharAviso() {
+      document.getElementById('modalAviso').classList.remove('aberto');
+    }
+
+    document.getElementById('modalOk').addEventListener('click', fecharAviso);
+    document.getElementById('modalAviso').addEventListener('click', function(e) {
+      if (e.target === this) fecharAviso();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') fecharAviso();
+    });
+    // ────────────────────────────────────────────────────────
     var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxu2-hoMlt6SwsFBIRgr_T0cwWq77gaGgz-6L3k5c0GzoxeSQiXAPxmX4YVV2hZL-hfKg/exec';
     var dc = 0, deps = [], arqs = [];
 
@@ -408,21 +455,21 @@
     }
 
     function enviar() {
-      if (!document.getElementById('nome').value.trim())     { alert('Preencha o nome completo.'); return; }
-      if (!document.getElementById('cpf').value.trim())      { alert('Preencha o CPF.'); return; }
+      if (!document.getElementById('nome').value.trim())     { mostrarAviso('Preencha o nome completo.'); return; }
+      if (!document.getElementById('cpf').value.trim())      { mostrarAviso('Preencha o CPF.'); return; }
       if (!validaCPF(document.getElementById('cpf').value))  {
         document.getElementById('cpf').classList.add('erro');
-        alert('CPF inválido. Verifique os números digitados.');
+        mostrarAviso('CPF inválido. Verifique os números digitados.');
         return;
       }
-      if (!document.getElementById('dataNasc').value)        { alert('Preencha a data de nascimento.'); return; }
-      if (!document.getElementById('telefone').value.trim()) { alert('Preencha o telefone.'); return; }
+      if (!document.getElementById('dataNasc').value)        { mostrarAviso('Preencha a data de nascimento.'); return; }
+      if (!document.getElementById('telefone').value.trim()) { mostrarAviso('Preencha o telefone.'); return; }
 
       var dependentes;
       try {
         dependentes = getDeps();
       } catch (e) {
-        alert(e.message);
+        mostrarAviso(e.message);
         return;
       }
 
@@ -483,7 +530,7 @@
             window.scrollTo(0, 0);
           }, 500);
         } else {
-          alert('Erro: ' + r.erro);
+          mostrarAviso('Erro: ' + r.erro);
           btn.textContent = 'Enviar ficha';
           btn.className = 'btn primary';
           document.getElementById('prog').style.display = 'none';
@@ -491,7 +538,7 @@
         }
       })
       .catch(function(e) {
-        alert('Erro: ' + e.message);
+        mostrarAviso('Erro: ' + e.message);
         btn.textContent = 'Enviar ficha';
         btn.className = 'btn primary';
         document.getElementById('prog').style.display = 'none';
