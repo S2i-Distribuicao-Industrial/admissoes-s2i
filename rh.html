@@ -101,7 +101,8 @@
       font-size: 14px; color: #666;
     }
 
-    @media (max-width: 520px) { .grid { grid-template-columns: 1fr } }
+    html { -webkit-text-size-adjust: 100% }
+
   
     .modal-overlay {
       position: fixed; inset: 0; z-index: 1000;
@@ -122,6 +123,60 @@
     .modal-box p  { font-size: 14px; line-height: 1.5; color: #444; margin-bottom: 1.25rem; word-break: break-word }
     .modal-box .btn { min-width: 110px }
     @keyframes modalIn { from { opacity: 0; transform: scale(.95) } to { opacity: 1; transform: scale(1) } }
+
+    @media (max-width: 600px) {
+      .app { padding: 1rem .75rem 2.5rem }
+      .grid { grid-template-columns: 1fr; gap: 14px }
+
+      .header, .collab-card { padding: 1rem; gap: 12px; border-radius: 12px }
+      .logo { width: 46px; height: 46px; font-size: 16px }
+      .header h1 { font-size: 19px }
+      .header p { font-size: 14px }
+      .collab-name { font-size: 17px }
+      .collab-info { font-size: 14px }
+
+      .card { padding: 1.15rem 1rem; border-radius: 12px }
+      .sec { font-size: 13px; margin-bottom: 1.1rem }
+
+      .f { gap: 6px }
+      .f label { font-size: 15px }
+      .f input, .f select, .f textarea {
+        font-size: 16px; padding: 12px; min-height: 48px; border-radius: 10px;
+      }
+      .f textarea { min-height: 90px }
+
+      .radio-group { gap: 22px; padding: 6px 0 }
+      .radio-group label { font-size: 16px; padding: 6px 0 }
+      .radio-group input[type="radio"] { width: 22px; height: 22px }
+
+      .info, .warn { font-size: 14px !important; line-height: 1.5; padding: .85rem 1rem }
+
+      .dep-item { padding: 1rem }
+      .dep-item > div:first-of-type { font-size: 14px !important }
+      .dep-rm { top: .25rem; right: .35rem; width: 40px; height: 40px; font-size: 24px }
+      .add-btn { font-size: 15px; padding: 14px 1rem; border-radius: 10px }
+
+      .upload-area { padding: 1.5rem 1rem }
+      .upload-area p { font-size: 15px }
+      .upload-area span { font-size: 13px }
+      .file-item { font-size: 14px; padding: 9px 12px; gap: 8px }
+      .file-item span { word-break: break-all }
+      .file-item button { font-size: 22px; padding: 0 6px }
+
+      .prog-msg { font-size: 14px }
+
+      .actions { flex-direction: column; margin-top: 1.25rem }
+      .btn { width: 100%; font-size: 16px; padding: 14px 22px; border-radius: 10px }
+
+      .ok, .erro-box { padding: 1.5rem 1.15rem }
+      .ok h2, .erro-box h2 { font-size: 20px }
+      .ok p, .erro-box p { font-size: 15px }
+
+      .modal-box { padding: 1.5rem 1.15rem 1.25rem }
+      .modal-box h3 { font-size: 18px }
+      .modal-box p { font-size: 15px }
+      .modal-box .btn { width: 100% }
+    }
   </style>
 </head>
 <body>
